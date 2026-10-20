@@ -13,22 +13,35 @@
 
 <p><b>Languages</b><br>
 <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white">
+<img alt="SQL" src="https://img.shields.io/badge/SQL-4169E1?style=flat-square">
 <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&amp;logo=typescript&amp;logoColor=white">
 <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=flat-square">
-<img alt="C++" src="https://img.shields.io/badge/C++-00599C?style=flat-square&amp;logo=cplusplus&amp;logoColor=white">
-<img alt="SQL" src="https://img.shields.io/badge/SQL-4169E1?style=flat-square&amp;logo=postgresql&amp;logoColor=white"></p>
+<img alt="C++" src="https://img.shields.io/badge/C++-00599C?style=flat-square&amp;logo=cplusplus&amp;logoColor=white"></p>
 
 <p><b>Agents &amp; retrieval</b><br>
-<img alt="ReAct" src="https://img.shields.io/badge/ReAct-1F6FEB?style=flat-square">
+<img alt="Planner–Executor" src="https://img.shields.io/badge/Planner%E2%80%93Executor-0E7490?style=flat-square">
+<img alt="LangChain" src="https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square&amp;logo=langchain&amp;logoColor=white">
 <img alt="MCP" src="https://img.shields.io/badge/MCP-24292F?style=flat-square&amp;logo=modelcontextprotocol&amp;logoColor=white">
-<img alt="LangGraph" src="https://img.shields.io/badge/LangGraph-1C3C3C?style=flat-square&amp;logo=langgraph&amp;logoColor=white">
-<img alt="Hybrid retrieval" src="https://img.shields.io/badge/Hybrid_retrieval-0E7490?style=flat-square"></p>
+<img alt="Hybrid retrieval" src="https://img.shields.io/badge/Hybrid_retrieval-0E7490?style=flat-square">
+<img alt="KV-cache reuse" src="https://img.shields.io/badge/KV--cache_reuse-0E7490?style=flat-square"></p>
 
-<p><b>Engineering &amp; data</b><br>
+<p><b>Backend &amp; data</b><br>
 <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&amp;logo=fastapi&amp;logoColor=white">
-<img alt="React" src="https://img.shields.io/badge/React-20232A?style=flat-square&amp;logo=react&amp;logoColor=61DAFB">
-<img alt="SQLite" src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&amp;logo=sqlite&amp;logoColor=white">
-<img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&amp;logo=redis&amp;logoColor=white"></p>
+<img alt="Async queues" src="https://img.shields.io/badge/Async_queues-2563EB?style=flat-square">
+<img alt="MySQL" src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&amp;logo=mysql&amp;logoColor=white">
+<img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&amp;logo=mongodb&amp;logoColor=white">
+<img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&amp;logo=redis&amp;logoColor=white">
+<img alt="MinIO" src="https://img.shields.io/badge/MinIO-C72E49?style=flat-square&amp;logo=minio&amp;logoColor=white"></p>
+
+<p><b>Evaluation</b><br>
+<img alt="A/A baselines" src="https://img.shields.io/badge/A%2FA_baselines-1F6FEB?style=flat-square">
+<img alt="NDCG" src="https://img.shields.io/badge/NDCG-1F6FEB?style=flat-square">
+<img alt="Ablations" src="https://img.shields.io/badge/Ablations-1F6FEB?style=flat-square"></p>
+
+<p><b>Computer vision</b><br>
+<img alt="YOLOv8" src="https://img.shields.io/badge/YOLOv8-7C3AED?style=flat-square">
+<img alt="Graph neural networks" src="https://img.shields.io/badge/GNN-7C3AED?style=flat-square">
+<img alt="GPU inference" src="https://img.shields.io/badge/GPU_inference-7C3AED?style=flat-square"></p>
 
 </td>
 <td valign="top" width="42%">
