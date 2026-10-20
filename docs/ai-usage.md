@@ -65,7 +65,7 @@ responses, IDs, project names, local paths, account details or credentials.
 
 ## Daily automatic publication
 
-The daily chat automation runs `python3 scripts/publish_ai_usage.py` at 09:00
+The daily chat automation runs `python3 scripts/publish_ai_usage.py` at 12:00
 Asia/Singapore in this local checkout. Keep the computer awake, the Codex desktop
 app running, and GitHub authentication valid at the scheduled time.
 
