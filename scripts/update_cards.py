@@ -56,16 +56,16 @@ def text(x, y, value, cls="body", **attrs):
     return f'<text x="{x}" y="{y}" class="{cls}" {attributes}>{escape(str(value))}</text>'
 
 
-def svg(body, height, theme, title):
+def svg(body, height, theme, title, width=420):
     bg, border, fg, muted, accent = (
         ("#0d1117", "#30363d", "#e6edf3", "#9198a1", "#79c0ff")
         if theme == "dark" else
         ("#ffffff", "#d1d9e0", "#1f2328", "#59636e", "#0969da")
     )
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="420" height="{height}" viewBox="0 0 420 {height}" role="img" aria-labelledby="title">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title">
 <title id="title">{escape(title)}</title>
 <style>text{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:{fg}}}.body{{font-size:14px}}.title{{font-size:18px;font-weight:600;fill:{accent}}}.muted{{font-size:12px;fill:{muted}}}.number{{font-size:15px;font-weight:600}}.accent{{fill:{accent}}}</style>
-<rect x=".5" y=".5" width="419" height="{height-1}" rx="8" fill="{bg}" stroke="{border}"/>
+<rect x=".5" y=".5" width="{width-1}" height="{height-1}" rx="8" fill="{bg}" stroke="{border}"/>
 {body}
 </svg>
 '''

@@ -17,8 +17,15 @@ than claiming every request came from a particular paid plan.
 - **Model calls:** unique API response/message IDs, including tool loops and
   subagent calls. This is not the number of human messages.
 - **Calls / active day:** model calls divided by active dates in the same window.
-- **Daily activity bars:** last 28 dates on a log(1 + tokens) scale. Card totals
-  and daily counters are exact; compact visual labels are rounded.
+- **Ring:** each provider's share of tokens processed in the same 28-day window.
+  The centre is the combined 28-day token total. Cumulative histories can start
+  on different dates, so cumulative totals are not used for the ring's shares.
+- **Daily heatmaps:** one square per day, reading left to right across the first
+  row and then the second. Both providers use the same square-root colour
+  intensity scale; zero-activity dates are neutral. SVG cell titles contain exact
+  dates and token counts. Compact visual labels are rounded.
+
+The module has light/dark desktop layouts and a stacked mobile layout.
 
 Input/output totals, all daily counters and exact cumulative counts are saved
 in `data/ai-usage.json`. Cards display the observation time; they are snapshots.

@@ -1,7 +1,9 @@
 """Render public aggregate AI activity. This module never reads local chat logs."""
 
 import json
-from datetime import datetime
+from datetime import date, datetime, timedelta
+from html import escape
+from math import pi, sqrt
 from zoneinfo import ZoneInfo
 
 from update_cards import ROOT, svg, text
@@ -44,45 +46,112 @@ def short(value):
     return f"{value:,.0f}"
 
 
+PROVIDERS = (("codex", "Codex"), ("claude", "Claude Code"))
+
+
+def daily_values(stats):
+    start = date.fromisoformat(stats["last_28_days"]["start_date"])
+    by_day = {day["date"]: day["total_tokens"] for day in stats["daily"]}
+    return [(start + timedelta(days=i), by_day.get((start + timedelta(days=i)).isoformat(), 0)) for i in range(28)]
+
+
+def blend(track, accent, amount):
+    a, b = (tuple(int(color[i:i+2], 16) for i in (1, 3, 5)) for color in (track, accent))
+    return "#" + "".join(f"{round(x+(y-x)*amount):02x}" for x, y in zip(a, b))
+
+
+def donut(x, y, radius, values, accents, track):
+    total = sum(values)
+    circumference = 2*pi*radius
+    width = 14
+    body = f'<circle cx="{x}" cy="{y}" r="{radius}" fill="none" stroke="{track}" stroke-width="{width}"/>'
+    offset = 0
+    for value, accent in zip(values, accents):
+        if value and total:
+            length = circumference*value/total
+            # The tiny neutral gap separates categories without outlining marks.
+            gap = 3 if all(values) else 0
+            body += f'<circle cx="{x}" cy="{y}" r="{radius}" fill="none" stroke="{accent}" stroke-width="{width}" stroke-dasharray="{max(0,length-gap):.3f} {circumference:.3f}" stroke-dashoffset="{-offset:.3f}" transform="rotate(-90 {x} {y})"/>'
+            offset += length
+    body += text(x, y-2, short(total), "ring-value", text_anchor="middle")
+    body += text(x, y+20, "tokens / 28 days", "muted", text_anchor="middle")
+    return body
+
+
+def heatmap(x, y, values, maximum, accent, track):
+    body = ""
+    # Both providers share one square-root intensity scale, not separate maxima.
+    for i, (day, value) in enumerate(values):
+        color = blend(track, accent, .18+.82*sqrt(value/maximum)) if value and maximum else track
+        title = escape(f"{day.isoformat()}: {value:,} tokens")
+        body += f'<rect x="{x+(i%14)*23}" y="{y+(i//14)*23}" width="19" height="19" rx="3" fill="{color}"><title>{title}</title></rect>'
+    body += text(x, y+61, values[0][0].strftime("%b %d"), "muted")
+    body += text(x+318, y+61, values[-1][0].strftime("%b %d"), "muted", text_anchor="end")
+    return body
+
+
+def provider_panel(x, y, stats, name, accent, track, maximum):
+    totals, recent = stats["totals"], stats["last_28_days"]
+    body = f'<circle cx="{x+4}" cy="{y-5}" r="4" fill="{accent}"/>'
+    body += text(x+17, y, name, "provider")
+    body += text(x, y+40, short(totals["total_tokens"]) if stats["first_recorded_date"] else "No records", "hero")
+    body += text(x, y+61, f"Cumulative since {stats['first_recorded_date']}" if stats["first_recorded_date"] else "No local request records", "muted")
+    body += heatmap(x, y+80, daily_values(stats), maximum, accent, track)
+    rows = [
+        ("Avg. tokens / week", short(recent["average_tokens_per_week"])),
+        ("Active days", f"{recent['active_days']} / 28"),
+        ("Model calls", f"{recent['model_calls']:,}"),
+        ("Calls / active day", f"{recent['model_calls_per_active_day']:g}"),
+    ]
+    for i, (label, value) in enumerate(rows):
+        body += text(x, y+171+i*25, label)
+        body += text(x+318, y+171+i*25, value, "number", text_anchor="end")
+    return body
+
+
 def render_usage(data=None):
     data = validate(data if data is not None else json.loads((ROOT / "data/ai-usage.json").read_text()))
     updated = datetime.fromisoformat(data["generated_at"]).astimezone(ZoneInfo("Asia/Singapore")).strftime("%d %b %Y, %H:%M SGT")
-    for provider, name, accent in (("codex", "Codex", "#10a37f"), ("claude", "Claude Code", "#d97757")):
-        stats = data["providers"][provider]
-        totals, recent = stats["totals"], stats["last_28_days"]
-        total = totals["total_tokens"]
-        for theme in ("light", "dark"):
-            body = f'<circle cx="27" cy="28" r="5" fill="{accent}"/>'
-            body += text(40, 34, name, "title")
-            body += text(22, 59, "TOTAL TOKENS PROCESSED", "muted")
-            body += text(22, 100, short(total) if stats["first_recorded_date"] else "No records", "hero")
-            body += text(22, 123, f"Since {stats['first_recorded_date']} · includes cached input" if stats["first_recorded_date"] else "No usage data found on this device", "muted")
-            rows = [
-                ("Avg. tokens / week · last 28d", short(recent["average_tokens_per_week"])),
-                ("Active days · last 28d", f"{recent['active_days']} / 28"),
-                ("Model calls · last 28d", f"{recent['model_calls']:,}"),
-                ("Calls / active day · last 28d", f"{recent['model_calls_per_active_day']:g}"),
-            ]
-            for i, (label, value) in enumerate(rows):
-                body += text(22, 160+i*27, label)
-                body += text(398, 160+i*27, value, "number", text_anchor="end")
-            # Log-scale daily bars keep high-traffic days from obscuring activity.
-            from datetime import date, timedelta
-            from math import log1p
-            start = date.fromisoformat(recent["start_date"])
-            by_day = {day["date"]: day["total_tokens"] for day in stats["daily"]}
-            values = [by_day.get((start+timedelta(days=i)).isoformat(), 0) for i in range(28)]
-            top = max(values, default=0)
-            track = "#212830" if theme == "dark" else "#eaeef2"
-            for i, value in enumerate(values):
-                height = 2 + 26 * log1p(value)/log1p(top) if top else 2
-                body += f'<rect x="{22+i*13.5:.1f}" y="{281-height:.1f}" width="9" height="{height:.1f}" rx="2" fill="{accent if value else track}"/>'
-            body += text(22, 300, "Daily token activity · last 28d · log scale", "muted")
-            body += text(22, 323, f"Input {short(totals['input_tokens'])} · Output {short(totals['output_tokens'])}", "muted")
-            body += text(22, 345, f"Snapshot · {updated}", "muted")
-            output = svg(body, 365, theme, f"{name}: {total:,} tokens processed from local logs")
-            output = output.replace("</style>", '.hero{font-size:38px;font-weight:650;letter-spacing:-1px}</style>')
-            (ROOT / "assets" / f"ai-{provider}-{theme}.svg").write_text(output, encoding="utf-8")
+    providers = data["providers"]
+    periods = {(s["last_28_days"]["start_date"], s["last_28_days"]["end_date"]) for s in providers.values()}
+    if len(periods) != 1:
+        raise ValueError("Provider shares require an identical observation window")
+    start, end = next(iter(periods))
+    values = [providers[key]["last_28_days"]["total_tokens"] for key, _ in PROVIDERS]
+    total = sum(values)
+    maximum = max(value for s in providers.values() for _, value in daily_values(s))
+    for theme in ("light", "dark"):
+        accents = ("#39c99b", "#e99a79") if theme == "dark" else ("#09886b", "#bc603f")
+        track = "#212830" if theme == "dark" else "#eaeef2"
+        for mobile in (False, True):
+            width, height = (360, 1000) if mobile else (720, 558)
+            body = text(22, 32, "Token workload", "provider")
+            body += text(width-22, 55 if mobile else 32, f"{start[5:]} — {end[5:]} · 28 days", "muted", text_anchor="end")
+            cx, cy = (180, 151) if mobile else (110, 119)
+            body += donut(cx, cy, 69, values, accents, track)
+            legend_x, legend_y = (22, 261) if mobile else (224, 84)
+            for i, ((key, name), value, accent) in enumerate(zip(PROVIDERS, values, accents)):
+                y = legend_y+i*35
+                body += f'<circle cx="{legend_x+4}" cy="{y-5}" r="4" fill="{accent}"/>'
+                body += text(legend_x+17, y, name)
+                share = f"{100*value/total:.1f}%" if total else "—"
+                body += text(width-22, y, f"{share} · {short(value)}", "number", text_anchor="end")
+            weekly_y = legend_y+82
+            body += text(legend_x, weekly_y, "Combined weekly average", "muted")
+            body += text(width-22, weekly_y+23 if mobile else weekly_y, short(total/4), "number", text_anchor="end")
+            divider_y = 390 if mobile else 217
+            body += f'<path d="M22 {divider_y}H{width-22}" class="rule"/>'
+            for i, ((key, name), accent) in enumerate(zip(PROVIDERS, accents)):
+                x, y = (22, 420+i*266) if mobile else (22+i*356, 250)
+                body += provider_panel(x, y, providers[key], name, accent, track, maximum)
+            footer_y = height-37
+            body += text(22, footer_y, "Daily token heatmap · common intensity scale", "muted")
+            body += text(22, footer_y+20, f"Snapshot · {updated}", "muted")
+            output = svg(body, height, theme, "AI workload: 28-day token share and daily activity; includes cached input", width=width)
+            css = '.hero{font-size:32px;font-weight:650;letter-spacing:-.5px}.ring-value{font-size:28px;font-weight:600}.provider{font-size:17px;font-weight:600}.rule{fill:none;stroke:' + ("#30363d" if theme == "dark" else "#d1d9e0") + ';stroke-width:1}'
+            output = output.replace("</style>", css + '</style>')
+            suffix = "-mobile" if mobile else ""
+            (ROOT / "assets" / f"ai-workload{suffix}-{theme}.svg").write_text(output, encoding="utf-8")
 
 
 if __name__ == "__main__":
