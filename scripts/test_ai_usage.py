@@ -6,6 +6,7 @@ from pathlib import Path
 
 from sync_ai_usage import aggregate, collect, merge, normalize
 from usage_cards import validate
+from publish_ai_usage import guard_history
 
 
 class WorkloadAccounting(unittest.TestCase):
@@ -61,6 +62,25 @@ class WorkloadAccounting(unittest.TestCase):
         data["account_id"] = "PRIVATE_SENTINEL"
         with self.assertRaises(ValueError):
             validate(data)
+
+    def test_automatic_publication_rejects_missing_local_logs(self):
+        now = datetime(2026, 10, 20, 4, tzinfo=timezone.utc)
+        stats = aggregate([], now)
+        data = {"schema_version": 2, "generated_at": now.isoformat(), "timezone": "Asia/Singapore",
+                "providers": {"codex": stats, "claude": stats}}
+        with self.assertRaises(ValueError):
+            guard_history(data, data, {"codex": {}, "claude": {}})
+
+    def test_automatic_publication_rejects_lost_days_even_if_total_increases(self):
+        now = datetime(2026, 10, 20, 4, tzinfo=timezone.utc)
+        old = aggregate([{"at": datetime(2026, 10, 19, 4, tzinfo=timezone.utc), "input": 100, "output": 20, "cached": 80}], now)
+        new = aggregate([{"at": now, "input": 1000, "output": 200, "cached": 800}], now)
+        base = {"schema_version": 2, "generated_at": now.isoformat(), "timezone": "Asia/Singapore"}
+        previous = {**base, "providers": {"codex": old, "claude": old}}
+        current = {**base, "providers": {"codex": new, "claude": new}}
+        audit = {p: {"files": 1, "unique_model_calls": 1} for p in ("codex", "claude")}
+        with self.assertRaises(ValueError):
+            guard_history(current, previous, audit)
 
 
 if __name__ == "__main__":

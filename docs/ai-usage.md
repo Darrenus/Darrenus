@@ -63,7 +63,20 @@ This reads numeric counters from `~/.codex/sessions`,
 provider API calls. Only aggregate dates and counts are exported: no prompts,
 responses, IDs, project names, local paths, account details or credentials.
 
+## Daily automatic publication
+
+The daily chat automation runs `python3 scripts/publish_ai_usage.py` at 09:00
+Asia/Singapore in this local checkout. Keep the computer awake, the Codex desktop
+app running, and GitHub authentication valid at the scheduled time.
+
+The helper pulls current changes, aggregates local counters, validates retained
+history, runs the accounting tests, and commits/pushes only the data JSON and
+four workload SVGs. It stops if local work would be disturbed or logs are missing.
+Concurrent GitHub statistics updates are rebased only for its own generated-file
+commits. A failed push can be resumed on the next run; it never force-pushes.
+Routine success is quiet; failures requiring attention are reported in this chat.
+
 GitHub Actions re-renders the saved workload data and updates GitHub statistics.
-It cannot read files on the user's computer. New local activity requires running
-the local sync command again; re-rendering never advances the observation time
-or pretends that a saved snapshot is a live account-wide meter.
+It cannot read files on the user's computer. The local automation supplies new
+activity; re-rendering alone never advances the observation time or pretends that
+a saved snapshot is a live account-wide meter.

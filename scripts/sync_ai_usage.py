@@ -153,17 +153,21 @@ def snapshot(home, now):
     return result, audit
 
 
+def write_snapshot(data):
+    from usage_cards import render_usage, validate
+    validate(data)
+    (ROOT / "data").mkdir(exist_ok=True)
+    render_usage(data)
+    (ROOT / "data/ai-usage.json").write_text(json.dumps(data, indent=2) + "\n")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--home-dir", type=Path, default=Path.home(), help="Read local counters under this home directory")
     args = parser.parse_args()
     now = datetime.now(timezone.utc)
     data, audit = snapshot(args.home_dir, now)
-    from usage_cards import render_usage, validate
-    validate(data)
-    (ROOT / "data").mkdir(exist_ok=True)
-    (ROOT / "data/ai-usage.json").write_text(json.dumps(data, indent=2) + "\n")
-    render_usage(data)
+    write_snapshot(data)
     print(json.dumps({"aggregation_audit": audit, "public_totals": {
         provider: stats["totals"] for provider, stats in data["providers"].items()
     }}, indent=2))
