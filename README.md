@@ -59,6 +59,27 @@
 </tr>
 </table>
 
+## AI Workload
+
+<table>
+<tr>
+<td width="50%" valign="top">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/ai-codex-dark.svg">
+  <img width="100%" alt="Codex workload: total tokens, weekly average, active days and model-call frequency" src="assets/ai-codex-light.svg">
+</picture>
+</td>
+<td width="50%" valign="top">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/ai-claude-dark.svg">
+  <img width="100%" alt="Claude Code workload: total tokens, weekly average, active days and model-call frequency" src="assets/ai-claude-light.svg">
+</picture>
+</td>
+</tr>
+</table>
+
+<sub>Local Codex &amp; Claude Code activity. Tokens include cached input; weekly averages use the last 28 days. Web chats and other devices are outside this snapshot. <a href="docs/ai-usage.md">Counting method ↗</a></sub>
+
 ## Research
 
 ### Agents & LLM systems

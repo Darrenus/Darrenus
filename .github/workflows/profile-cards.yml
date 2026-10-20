@@ -8,6 +8,9 @@ on:
     branches: [main]
     paths:
       - scripts/update_cards.py
+      - scripts/usage_cards.py
+      - scripts/test_ai_usage.py
+      - data/ai-usage.json
       - .github/workflows/profile-cards.yml
 
 permissions:
@@ -23,10 +26,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - name: Verify workload accounting
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Render cards from public GitHub data
         run: python3 scripts/update_cards.py
         env:
           GH_TOKEN: ${{ github.token }}
+      - name: Render saved AI workload statistics
+        run: python3 scripts/usage_cards.py
       - name: Commit updated cards
         run: |
           if [ -n "$(git status --porcelain assets/)" ]; then
