@@ -53,18 +53,24 @@
 </picture>
 </a>
 
-<p><b>Featured</b></p>
+<p><b>Featured work</b></p>
 
 <a href="https://github.com/Darrenus/coding-agent-from-scratch">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/coding-agent-dark.svg">
-  <img width="100%" alt="coding-agent-from-scratch — A terminal coding agent built without a framework" src="assets/coding-agent-light.svg">
+  <img width="100%" alt="coding-agent-from-scratch — Independent open-source agent with repository maps, sandboxing and controlled evaluation" src="assets/coding-agent-light.svg">
 </picture>
 </a>
-<a href="https://github.com/Darrenus/bodycraft-oss">
+<a href="https://rong.bio/en/projects/spreadsheet-qa/">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/bodycraft-dark.svg">
-  <img width="100%" alt="bodycraft-oss — Multi-path retrieval with measured scoring weights" src="assets/bodycraft-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/spreadsheet-agent-dark.svg">
+  <img width="100%" alt="Spreadsheet Analysis Agent — SAIC internal project; backend contributor working on storage, async ingestion and guarded execution" src="assets/spreadsheet-agent-light.svg">
+</picture>
+</a>
+<a href="https://rong.bio/en/resume#jantech-industrial-ai">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/industrial-vision-dark.svg">
+  <img width="100%" alt="Industrial Vision Scoring — Algorithm engineer at JIEAN; camera-based assembly-step checks using YOLOv8 and GNNs" src="assets/industrial-vision-light.svg">
 </picture>
 </a>
 

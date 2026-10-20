@@ -81,11 +81,17 @@ def render(repos, collection, counts):
     end = collection["endedAt"][:10]
     cards = [
         ("coding-agent", "coding-agent-from-scratch", [
-            "A terminal coding agent, built from scratch.",
-            "ReAct · repository maps · sandboxed tools"], "Python", "#3572A5"),
-        ("bodycraft", "bodycraft-oss", [
-            "Multi-path retrieval over technical documents.",
-            "Full-text · vectors · graphs · ranking evaluation"], "Python", "#3572A5"),
+            "Tool use, repository maps & sandboxing.",
+            "Designs tested with controlled experiments."],
+         "Independent project · Open source", "#3572A5"),
+        ("spreadsheet-agent", "Spreadsheet Analysis Agent", [
+            "Questions become verified SQL and charts.",
+            "Storage, async ingestion & guarded execution."],
+         "SAIC · Internal project · Backend contributor", "#09886B"),
+        ("industrial-vision", "Industrial Vision Scoring", [
+            "Assembly-step checks from camera feeds.",
+            "YOLOv8 + GNNs for practical examinations."],
+         "JIEAN · Deployed project · Algorithm engineer", "#7C3AED"),
     ]
     for theme in ("light", "dark"):
         body = text(22, 34, "GitHub Stats", "title")
@@ -97,16 +103,16 @@ def render(repos, collection, counts):
         body += text(22, 259, f"Updated {end} · repository & star totals are all-time", "muted")
         (assets / f"github-stats-{theme}.svg").write_text(
             svg(body, 278, theme, "Rong's GitHub statistics"), encoding="utf-8")
-        for slug, title, lines, lang, color in cards:
+        for slug, title, lines, role, color in cards:
             body = text(18, 29, title, "title")
             for i, line in enumerate(lines):
                 body += text(18, 54 + 20 * i, line, "muted")
             body += f'<circle cx="23" cy="98" r="5" fill="{color}"/>'
-            body += text(35, 102, lang, "muted")
+            body += text(35, 102, role, "muted")
             (assets / f"{slug}-{theme}.svg").write_text(
-                svg(body, 120, theme, title + ": " + lines[0]), encoding="utf-8")
+                svg(body, 120, theme, title + ": " + lines[0], width=360), encoding="utf-8")
 
 
 if __name__ == "__main__":
     render(*load_data())
-    print("Updated six profile cards from public GitHub data.")
+    print("Updated GitHub statistics and featured-work cards.")
