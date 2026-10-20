@@ -1,29 +1,29 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-20T06:30:18.417170+00:00",
+  "generated_at": "2026-10-20T06:41:47.578012+00:00",
   "timezone": "Asia/Singapore",
   "providers": {
     "codex": {
       "first_recorded_date": "2026-09-06",
       "last_recorded_date": "2026-10-20",
       "totals": {
-        "total_tokens": 1441038781,
-        "input_tokens": 1432075872,
-        "output_tokens": 8962909,
-        "cache_read_tokens": 1383905920,
-        "model_calls": 9594
+        "total_tokens": 1446226167,
+        "input_tokens": 1437253338,
+        "output_tokens": 8972829,
+        "cache_read_tokens": 1389022976,
+        "model_calls": 9618
       },
       "last_28_days": {
         "start_date": "2026-09-23",
         "end_date": "2026-10-20",
-        "total_tokens": 1032025987,
-        "input_tokens": 1025227540,
-        "output_tokens": 6798447,
-        "cache_read_tokens": 990018048,
-        "model_calls": 6707,
+        "total_tokens": 1037213373,
+        "input_tokens": 1030405006,
+        "output_tokens": 6808367,
+        "cache_read_tokens": 995135104,
+        "model_calls": 6731,
         "active_days": 23,
-        "average_tokens_per_week": 258006496.75,
-        "model_calls_per_active_day": 291.6
+        "average_tokens_per_week": 259303343.25,
+        "model_calls_per_active_day": 292.7
       },
       "daily": [
         {
@@ -276,11 +276,11 @@
         },
         {
           "date": "2026-10-20",
-          "total_tokens": 15984471,
-          "input_tokens": 15927878,
-          "output_tokens": 56593,
-          "cache_read_tokens": 15252608,
-          "model_calls": 135
+          "total_tokens": 21171857,
+          "input_tokens": 21105344,
+          "output_tokens": 66513,
+          "cache_read_tokens": 20369664,
+          "model_calls": 159
         }
       ]
     },
