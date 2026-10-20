@@ -1,15 +1,15 @@
 <h1 align="center">Rong He · 贺融</h1>
-<p align="center">AI agents · Retrieval systems · Reproducible evaluation</p>
+<p align="center">AI agents · Backend systems · Industrial vision</p>
 
 <table>
 <tr>
 <td valign="top" width="58%">
 
-<p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 You can also call me Allen. I'm pursuing an M.Tech. in Software Engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after studying Computer Science at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
+<p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 I build AI agents and backend systems. I'm studying software engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after a computer science degree at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
 
-<p>I build AI agents and retrieval systems. My work has taken me from industrial computer vision to enterprise agents; these days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring how to retrieve the right context with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>.</p>
+<p>My work has taken me from camera-based assembly checks to agents for engineering teams at SAIC. I also enjoy the backend work that makes those tools usable: bringing data in, organising storage and running jobs in the background.</p>
 
-<p>I'm also exploring agent self-modification, context management and the mathematics behind learning and inference. I like experiments that can change my mind, including negative results. Some of that work is collected below ↓</p>
+<p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring hybrid retrieval with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>. I'm curious about how agents use tools and context, and I like testing which ideas actually help.</p>
 
 <p><b>Languages</b><br>
 <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white">
