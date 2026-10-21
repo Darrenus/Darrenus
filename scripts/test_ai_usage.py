@@ -7,6 +7,7 @@ from pathlib import Path
 from sync_ai_usage import aggregate, collect, merge, normalize
 from usage_cards import validate
 from publish_ai_usage import guard_history
+from usage_history import seed_history, retain, load_history, save_history
 
 
 class WorkloadAccounting(unittest.TestCase):
@@ -81,6 +82,67 @@ class WorkloadAccounting(unittest.TestCase):
         audit = {p: {"files": 1, "unique_model_calls": 1} for p in ("codex", "claude")}
         with self.assertRaises(ValueError):
             guard_history(current, previous, audit)
+
+    def history_fixture(self):
+        cutoff = datetime(2026, 10, 20, 4, tzinfo=timezone.utc)
+        record = {"at": cutoff, "input": 100, "output": 20, "cached": 80}
+        stats = aggregate([record], cutoff)
+        data = {"schema_version": 2, "generated_at": cutoff.isoformat(), "timezone": "Asia/Singapore",
+                "providers": {"codex": stats, "claude": stats}}
+        return cutoff, record, data, seed_history(data)
+
+    def test_ledger_recovers_baseline_without_counting_restored_old_transcripts(self):
+        cutoff, old, data, state = self.history_fixture()
+        later = datetime(2026, 10, 20, 5, tzinfo=timezone.utc)
+        new = {**old, "at": later}
+        records = retain(state, {"old": old, "new": new, "copied-old": old}, later)
+        current = aggregate(records, later, state["baseline"])
+        self.assertEqual(current["totals"]["total_tokens"], 240)
+        self.assertEqual(current["totals"]["model_calls"], 2)
+        self.assertEqual(current["daily"][0]["total_tokens"], 240)
+
+    def test_ledger_survives_deleted_logs_and_streaming_updates_without_double_counting(self):
+        cutoff, old, data, state = self.history_fixture()
+        later = datetime(2026, 10, 21, 5, tzinfo=timezone.utc)
+        new = {**old, "at": later}
+        retain(state, {"new": new}, later)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "state.json"
+            save_history(path, state)
+            state = load_history(path)
+            result = aggregate(retain(state, {}, later), later, state["baseline"])
+            self.assertEqual(result["totals"]["total_tokens"], 240)
+            updated = {**new, "output": 30}
+            result = aggregate(retain(state, {"new": updated}, later), later, state["baseline"])
+            self.assertEqual(result["totals"]["total_tokens"], 250)
+            self.assertEqual(result["totals"]["model_calls"], 2)
+            self.assertEqual(result["last_28_days"]["average_tokens_per_week"], 62.5)
+            save_history(path, state)
+            self.assertTrue(path.with_suffix('.json.bak').exists())
+            self.assertNotIn('"new"', path.read_text())
+            self.assertNotIn('source_path', path.read_text())
+
+    def test_ledger_rejects_inconsistent_baseline_and_corrupt_state(self):
+        cutoff, old, data, state = self.history_fixture()
+        data["providers"]["claude"]["daily"][0]["total_tokens"] += 1
+        with self.assertRaises(ValueError):
+            seed_history(data)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'state.json'
+            self.assertIsNone(load_history(path))
+            path.write_text('{broken')
+            with self.assertRaises(ValueError):
+                load_history(path)
+
+    def test_retained_history_still_passes_original_publication_guard(self):
+        cutoff, old, previous, state = self.history_fixture()
+        later = datetime(2026, 10, 21, 5, tzinfo=timezone.utc)
+        stats = aggregate(retain(state, {}, later), later, state["baseline"])
+        current = {**previous, "providers": {"codex": stats, "claude": stats}}
+        audit = {p: {"files": 1, "unique_model_calls": 1} for p in ("codex", "claude")}
+        guard_history(current, previous, audit)
+        with self.assertRaises(ValueError):
+            guard_history(current, previous, {"codex": audit['codex'], "claude": {}})
 
 
 if __name__ == "__main__":

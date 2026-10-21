@@ -15,6 +15,7 @@ from pathlib import Path
 
 from sync_ai_usage import ROOT, snapshot, write_snapshot
 from usage_cards import METRICS, validate
+from usage_history import HISTORY_PATH, load_history, save_history
 
 MESSAGE = "chore: refresh AI workload statistics [auto]"
 FILES = (
@@ -79,10 +80,13 @@ def publish():
     else:
         git("merge", "--ff-only", "origin/main")
     previous = json.loads((ROOT / "data/ai-usage.json").read_text())
-    current, audit = snapshot(Path.home(), datetime.now(timezone.utc))
+    state = load_history(HISTORY_PATH)
+    current, audit = snapshot(Path.home(), datetime.now(timezone.utc), state)
     guard_history(current, previous, audit)
     subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "scripts", "-p", "test_*.py"],
                    cwd=ROOT, check=True, capture_output=True, text=True, timeout=30)
+    if state is not None:
+        save_history(HISTORY_PATH, state)
     write_snapshot(current)
     git("add", "--", *FILES)
     staged = set(git("diff", "--cached", "--name-only").splitlines())

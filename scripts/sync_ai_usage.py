@@ -65,7 +65,7 @@ def merge(records, identifier, record):
     records[identifier] = record
 
 
-def collect(paths, provider, now):
+def collect(paths, provider, now, keyed=False):
     records, audit = {}, Counter()
     seen_files = set()
     for root in paths:
@@ -102,14 +102,19 @@ def collect(paths, provider, now):
                         audit["duplicates"] += 1
                     merge(records, identifier, record)
     audit["unique_model_calls"] = len(records)
-    return records.values(), dict(audit)
+    return (records if keyed else records.values()), dict(audit)
 
 
-def aggregate(records, now):
+def aggregate(records, now, history=()):
     today = now.astimezone(SGT).date()
     start = today - timedelta(days=27)
     days = defaultdict(lambda: Counter())
     totals = Counter()
+    for saved in history:
+        day = datetime.fromisoformat(saved["date"]).date()
+        values = {key: value for key, value in saved.items() if key != "date"}
+        days[day].update(values)
+        totals.update(values)
     for record in records:
         day = record["at"].astimezone(SGT).date()
         for bucket in (totals, days[day]):
@@ -140,7 +145,7 @@ def aggregate(records, now):
     }
 
 
-def snapshot(home, now):
+def snapshot(home, now, claude_state=None):
     providers = {
         "codex": [home / ".codex/sessions", home / ".codex/archived_sessions"],
         "claude": [home / ".claude/projects"],
@@ -148,8 +153,14 @@ def snapshot(home, now):
     result = {"schema_version": 2, "generated_at": now.isoformat(), "timezone": "Asia/Singapore", "providers": {}}
     audit = {}
     for provider, paths in providers.items():
-        records, audit[provider] = collect(paths, provider, now)
-        result["providers"][provider] = aggregate(records, now)
+        retained = provider == "claude" and claude_state is not None
+        records, audit[provider] = collect(paths, provider, now, keyed=retained)
+        if retained:
+            from usage_history import retain
+            records = retain(claude_state, records, now)
+            result["providers"][provider] = aggregate(records, now, claude_state["baseline"])
+        else:
+            result["providers"][provider] = aggregate(records, now)
     return result, audit
 
 
@@ -165,8 +176,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--home-dir", type=Path, default=Path.home(), help="Read local counters under this home directory")
     args = parser.parse_args()
+    from usage_history import HISTORY_PATH, load_history, save_history
+    state = load_history(HISTORY_PATH) if args.home_dir == Path.home() else None
     now = datetime.now(timezone.utc)
-    data, audit = snapshot(args.home_dir, now)
+    data, audit = snapshot(args.home_dir, now, state)
+    if state is not None:
+        save_history(HISTORY_PATH, state)
     write_snapshot(data)
     print(json.dumps({"aggregation_audit": audit, "public_totals": {
         provider: stats["totals"] for provider, stats in data["providers"].items()

@@ -2,8 +2,9 @@
 
 This section measures local model activity, not plan quotas or API spending.
 It covers Codex and Claude Code request counters available on this device.
-ChatGPT and Claude web conversations, other devices, deleted logs, and usage
-before local records began are not included. Subscription billing and payment
+ChatGPT and Claude web conversations, other devices, and usage before local
+records began are not included. Deleted logs are covered only if their numeric
+counters were retained before deletion. Subscription billing and payment
 method are not present in these counters, so the cards use product names rather
 than claiming every request came from a particular paid plan.
 
@@ -44,6 +45,31 @@ Total input = `input_tokens` + `cache_read_input_tokens` +
 `cache_creation_input_tokens`. Output includes thinking, so thinking counters,
 cache TTL breakdowns, and nested `iterations` are not added a second time.
 
+### Retaining historical counts
+
+Claude Code can remove old transcripts during its retention sweep. The local
+publisher therefore keeps a private numeric ledger outside the Git checkout,
+in a sibling `.ai-usage-state` directory. Only timestamps, numeric counters,
+and SHA-256 message-ID digests are retained; no conversation content or original
+IDs are stored there. The ledger and its previous valid backup are written
+atomically with owner-only file access and are never staged or pushed.
+
+The initial historical baseline is the last complete published snapshot from
+[20 October 2026](https://github.com/Darrenus/Darrenus/commit/6c4c261e2ff40ff826130d2ee2bf488cd7ea2c2a).
+Its daily counters are checked against its totals before import. Calls with
+timestamps at or before that snapshot's observation time belong exclusively to
+the sealed baseline; later calls belong exclusively to the private ledger.
+Restoring an old transcript therefore does not add its calls twice. Streaming
+updates for later calls retain the maximum counters rather than summing copies.
+Updates to calls already sealed in the baseline are not retroactively estimated.
+
+The publisher still applies the existing cumulative and per-day history-loss
+checks. It does not fill missing counts with guesses or take a maximum between
+independently recomputed daily totals. A missing/corrupt ledger or unavailable
+local logs stops publication when validation fails. Raw deleted conversations
+cannot be recreated from these aggregate counters. Calls deleted before their
+first successful collection cannot be recovered from the ledger.
+
 The parser fails on invalid usage counters rather than publishing an incorrect
 total. Records without usable request-level token counters are not estimated.
 
@@ -69,7 +95,7 @@ The daily chat automation runs `python3 scripts/publish_ai_usage.py` at 12:00
 Asia/Singapore in this local checkout. Keep the computer awake, the Codex desktop
 app running, and GitHub authentication valid at the scheduled time.
 
-The helper pulls current changes, aggregates local counters, validates retained
+The helper pulls current changes, aggregates local and retained counters, validates retained
 history, runs the accounting tests, and commits/pushes only the data JSON and
 four workload SVGs. It stops if local work would be disturbed or logs are missing.
 Concurrent GitHub statistics updates are rebased only for its own generated-file

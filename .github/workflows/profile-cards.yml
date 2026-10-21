@@ -11,6 +11,7 @@ on:
       - scripts/usage_cards.py
       - scripts/publish_ai_usage.py
       - scripts/sync_ai_usage.py
+      - scripts/usage_history.py
       - scripts/test_ai_usage.py
       - data/ai-usage.json
       - .github/workflows/profile-cards.yml
