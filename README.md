@@ -7,9 +7,9 @@
 
 <p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 I build AI agents and backend systems. I'm studying software engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after a computer science degree at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
 
-<p>My work has taken me from camera-based assembly checks to agents for engineering teams at SAIC. I also enjoy the backend work that makes those tools usable: bringing data in, organising storage and running jobs in the background.</p>
+<p>My work has taken me from backend to agent developing. I also enjoy the backend work that makes those tools usable: bringing data in, organising storage and running jobs in the background.</p>
 
-<p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring hybrid retrieval with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>. I'm curious about how agents use tools and context, and I like testing which ideas actually help.</p>
+<p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring hybrid retrieval with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>. I'm curious about pursuing the future of agents, and using them to address real-world requirements.</p>
 
 <p><b>Languages</b><br>
 <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white">
