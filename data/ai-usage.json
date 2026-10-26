@@ -1,238 +1,246 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-23T04:38:34.108512+00:00",
+  "generated_at": "2026-10-26T04:37:03.069736+00:00",
   "timezone": "Asia/Singapore",
   "providers": {
     "codex": {
       "first_recorded_date": "2026-09-06",
-      "last_recorded_date": "2026-10-23",
+      "last_recorded_date": "2026-10-26",
       "totals": {
-        "total_tokens": 1663909358,
-        "input_tokens": 1654166094,
-        "output_tokens": 9743264,
-        "cache_read_tokens": 1598605440,
-        "model_calls": 11388
+        "total_tokens": 2636508117,
+        "input_tokens": 2623161320,
+        "output_tokens": 13346797,
+        "cache_read_tokens": 2536757248,
+        "model_calls": 17134
       },
       "last_28_days": {
-        "start_date": "2026-09-26",
-        "end_date": "2026-10-23",
-        "total_tokens": 1230584496,
-        "input_tokens": 1223185364,
-        "output_tokens": 7399132,
-        "cache_read_tokens": 1181791616,
-        "model_calls": 8294,
-        "active_days": 25,
-        "average_tokens_per_week": 307646124.0,
-        "model_calls_per_active_day": 331.8
+        "start_date": "2026-09-29",
+        "end_date": "2026-10-26",
+        "total_tokens": 1943572990,
+        "input_tokens": 1933922708,
+        "output_tokens": 9650282,
+        "cache_read_tokens": 1875662976,
+        "model_calls": 11957,
+        "active_days": 26,
+        "average_tokens_per_week": 485893247.5,
+        "model_calls_per_active_day": 459.9
       },
       "daily": [
         {
           "date": "2026-09-06",
-          "total_tokens": 8337064,
-          "input_tokens": 8323596,
-          "output_tokens": 13468,
-          "cache_read_tokens": 8003456,
-          "model_calls": 64
+          "total_tokens": 8392611,
+          "input_tokens": 8378392,
+          "output_tokens": 14219,
+          "cache_read_tokens": 8046976,
+          "model_calls": 66
         },
         {
           "date": "2026-09-07",
-          "total_tokens": 19507974,
-          "input_tokens": 19438242,
-          "output_tokens": 69732,
-          "cache_read_tokens": 18257920,
-          "model_calls": 155
-        },
-        {
-          "date": "2026-09-08",
-          "total_tokens": 2073225,
-          "input_tokens": 2057772,
-          "output_tokens": 15453,
-          "cache_read_tokens": 1810432,
-          "model_calls": 28
-        },
-        {
-          "date": "2026-09-09",
-          "total_tokens": 22525300,
-          "input_tokens": 22479040,
-          "output_tokens": 46260,
-          "cache_read_tokens": 21400320,
+          "total_tokens": 19789250,
+          "input_tokens": 19708326,
+          "output_tokens": 80924,
+          "cache_read_tokens": 18487680,
           "model_calls": 161
         },
         {
+          "date": "2026-09-08",
+          "total_tokens": 23244347,
+          "input_tokens": 23191306,
+          "output_tokens": 53041,
+          "cache_read_tokens": 22290688,
+          "model_calls": 212
+        },
+        {
+          "date": "2026-09-09",
+          "total_tokens": 61640976,
+          "input_tokens": 61398616,
+          "output_tokens": 242360,
+          "cache_read_tokens": 58541952,
+          "model_calls": 453
+        },
+        {
           "date": "2026-09-10",
-          "total_tokens": 175634,
-          "input_tokens": 173342,
-          "output_tokens": 2292,
-          "cache_read_tokens": 147840,
-          "model_calls": 6
+          "total_tokens": 31469155,
+          "input_tokens": 31312363,
+          "output_tokens": 156792,
+          "cache_read_tokens": 29425024,
+          "model_calls": 241
         },
         {
           "date": "2026-09-11",
-          "total_tokens": 84975467,
-          "input_tokens": 84448266,
-          "output_tokens": 527201,
-          "cache_read_tokens": 81994368,
-          "model_calls": 595
+          "total_tokens": 86338641,
+          "input_tokens": 85808297,
+          "output_tokens": 530344,
+          "cache_read_tokens": 83149568,
+          "model_calls": 615
         },
         {
           "date": "2026-09-12",
-          "total_tokens": 89514582,
-          "input_tokens": 88938204,
-          "output_tokens": 576378,
-          "cache_read_tokens": 85924352,
-          "model_calls": 644
+          "total_tokens": 89888860,
+          "input_tokens": 89311200,
+          "output_tokens": 577660,
+          "cache_read_tokens": 86125568,
+          "model_calls": 654
         },
         {
           "date": "2026-09-13",
-          "total_tokens": 1798097,
-          "input_tokens": 1789643,
-          "output_tokens": 8454,
-          "cache_read_tokens": 1767936,
-          "model_calls": 12
+          "total_tokens": 1868460,
+          "input_tokens": 1859698,
+          "output_tokens": 8762,
+          "cache_read_tokens": 1800192,
+          "model_calls": 14
         },
         {
           "date": "2026-09-19",
-          "total_tokens": 41454412,
-          "input_tokens": 41245656,
-          "output_tokens": 208756,
-          "cache_read_tokens": 39776512,
-          "model_calls": 299
+          "total_tokens": 45364657,
+          "input_tokens": 45144128,
+          "output_tokens": 220529,
+          "cache_read_tokens": 43331968,
+          "model_calls": 334
+        },
+        {
+          "date": "2026-09-20",
+          "total_tokens": 3034137,
+          "input_tokens": 3025743,
+          "output_tokens": 8394,
+          "cache_read_tokens": 2670464,
+          "model_calls": 19
         },
         {
           "date": "2026-09-21",
-          "total_tokens": 13202196,
-          "input_tokens": 13163772,
-          "output_tokens": 38424,
-          "cache_read_tokens": 12482176,
-          "model_calls": 108
+          "total_tokens": 15982216,
+          "input_tokens": 15938181,
+          "output_tokens": 44035,
+          "cache_read_tokens": 15016320,
+          "model_calls": 153
         },
         {
           "date": "2026-09-22",
-          "total_tokens": 130952189,
-          "input_tokens": 130251644,
-          "output_tokens": 700545,
-          "cache_read_tokens": 127206144,
-          "model_calls": 890
+          "total_tokens": 134610850,
+          "input_tokens": 133900343,
+          "output_tokens": 710507,
+          "cache_read_tokens": 130264064,
+          "model_calls": 911
         },
         {
           "date": "2026-09-23",
-          "total_tokens": 18808722,
-          "input_tokens": 18671553,
-          "output_tokens": 137169,
-          "cache_read_tokens": 18042368,
-          "model_calls": 132
+          "total_tokens": 24044701,
+          "input_tokens": 23855735,
+          "output_tokens": 188966,
+          "cache_read_tokens": 22810880,
+          "model_calls": 180
         },
         {
           "date": "2026-09-27",
-          "total_tokens": 425242,
-          "input_tokens": 421201,
-          "output_tokens": 4041,
-          "cache_read_tokens": 337280,
-          "model_calls": 4
+          "total_tokens": 3495303,
+          "input_tokens": 3463306,
+          "output_tokens": 31997,
+          "cache_read_tokens": 3087488,
+          "model_calls": 24
         },
         {
           "date": "2026-09-28",
-          "total_tokens": 57662880,
-          "input_tokens": 57526548,
-          "output_tokens": 136332,
-          "cache_read_tokens": 55349888,
-          "model_calls": 436
+          "total_tokens": 143770963,
+          "input_tokens": 142942978,
+          "output_tokens": 827985,
+          "cache_read_tokens": 136045440,
+          "model_calls": 1140
         },
         {
           "date": "2026-09-29",
-          "total_tokens": 20707804,
-          "input_tokens": 20649529,
-          "output_tokens": 58275,
-          "cache_read_tokens": 19944064,
-          "model_calls": 145
+          "total_tokens": 29299554,
+          "input_tokens": 29191527,
+          "output_tokens": 108027,
+          "cache_read_tokens": 27515648,
+          "model_calls": 245
         },
         {
           "date": "2026-09-30",
-          "total_tokens": 45708007,
-          "input_tokens": 45439767,
-          "output_tokens": 268240,
-          "cache_read_tokens": 44235008,
-          "model_calls": 317
+          "total_tokens": 48135641,
+          "input_tokens": 47862917,
+          "output_tokens": 272724,
+          "cache_read_tokens": 46194944,
+          "model_calls": 357
         },
         {
           "date": "2026-10-01",
-          "total_tokens": 37554556,
-          "input_tokens": 37315820,
-          "output_tokens": 238736,
-          "cache_read_tokens": 35177600,
-          "model_calls": 286
+          "total_tokens": 37667948,
+          "input_tokens": 37428834,
+          "output_tokens": 239114,
+          "cache_read_tokens": 35246464,
+          "model_calls": 289
         },
         {
           "date": "2026-10-02",
-          "total_tokens": 31441748,
-          "input_tokens": 31340679,
-          "output_tokens": 101069,
-          "cache_read_tokens": 30304128,
-          "model_calls": 222
+          "total_tokens": 36469287,
+          "input_tokens": 36360147,
+          "output_tokens": 109140,
+          "cache_read_tokens": 34890624,
+          "model_calls": 294
         },
         {
           "date": "2026-10-03",
-          "total_tokens": 11795147,
-          "input_tokens": 11749677,
-          "output_tokens": 45470,
-          "cache_read_tokens": 10520704,
-          "model_calls": 107
+          "total_tokens": 12955959,
+          "input_tokens": 12907794,
+          "output_tokens": 48165,
+          "cache_read_tokens": 11433088,
+          "model_calls": 135
         },
         {
           "date": "2026-10-04",
-          "total_tokens": 2099157,
-          "input_tokens": 2091444,
-          "output_tokens": 7713,
-          "cache_read_tokens": 1978368,
-          "model_calls": 17
+          "total_tokens": 2317676,
+          "input_tokens": 2309319,
+          "output_tokens": 8357,
+          "cache_read_tokens": 2156032,
+          "model_calls": 23
         },
         {
           "date": "2026-10-05",
-          "total_tokens": 2450311,
-          "input_tokens": 2440697,
-          "output_tokens": 9614,
-          "cache_read_tokens": 2302592,
-          "model_calls": 16
+          "total_tokens": 2710574,
+          "input_tokens": 2700076,
+          "output_tokens": 10498,
+          "cache_read_tokens": 2515840,
+          "model_calls": 23
         },
         {
           "date": "2026-10-06",
-          "total_tokens": 10090809,
-          "input_tokens": 10068292,
-          "output_tokens": 22517,
-          "cache_read_tokens": 9883264,
-          "model_calls": 54
+          "total_tokens": 14998772,
+          "input_tokens": 14952722,
+          "output_tokens": 46050,
+          "cache_read_tokens": 14179968,
+          "model_calls": 107
         },
         {
           "date": "2026-10-08",
-          "total_tokens": 26129926,
-          "input_tokens": 26057809,
-          "output_tokens": 72117,
-          "cache_read_tokens": 25635840,
-          "model_calls": 189
+          "total_tokens": 35913280,
+          "input_tokens": 35800346,
+          "output_tokens": 112934,
+          "cache_read_tokens": 34262528,
+          "model_calls": 294
         },
         {
           "date": "2026-10-09",
-          "total_tokens": 39802983,
-          "input_tokens": 39443350,
-          "output_tokens": 359633,
-          "cache_read_tokens": 37315456,
-          "model_calls": 301
+          "total_tokens": 41588096,
+          "input_tokens": 41222229,
+          "output_tokens": 365867,
+          "cache_read_tokens": 38415744,
+          "model_calls": 351
         },
         {
           "date": "2026-10-10",
-          "total_tokens": 189756759,
-          "input_tokens": 188028976,
-          "output_tokens": 1727783,
-          "cache_read_tokens": 180803840,
-          "model_calls": 1306
+          "total_tokens": 198890789,
+          "input_tokens": 197122917,
+          "output_tokens": 1767872,
+          "cache_read_tokens": 188039552,
+          "model_calls": 1449
         },
         {
           "date": "2026-10-11",
-          "total_tokens": 179685464,
-          "input_tokens": 178106715,
-          "output_tokens": 1578749,
-          "cache_read_tokens": 172292992,
-          "model_calls": 1281
+          "total_tokens": 183338755,
+          "input_tokens": 181749424,
+          "output_tokens": 1589331,
+          "cache_read_tokens": 174982784,
+          "model_calls": 1366
         },
         {
           "date": "2026-10-12",
@@ -316,35 +324,59 @@
         },
         {
           "date": "2026-10-23",
-          "total_tokens": 222988,
-          "input_tokens": 222750,
-          "output_tokens": 238,
-          "cache_read_tokens": 198016,
-          "model_calls": 2
+          "total_tokens": 9064781,
+          "input_tokens": 9023280,
+          "output_tokens": 41501,
+          "cache_read_tokens": 8623360,
+          "model_calls": 66
+        },
+        {
+          "date": "2026-10-24",
+          "total_tokens": 689766,
+          "input_tokens": 689325,
+          "output_tokens": 441,
+          "cache_read_tokens": 444032,
+          "model_calls": 4
+        },
+        {
+          "date": "2026-10-25",
+          "total_tokens": 204288816,
+          "input_tokens": 203602373,
+          "output_tokens": 686443,
+          "cache_read_tokens": 199972864,
+          "model_calls": 978
+        },
+        {
+          "date": "2026-10-26",
+          "total_tokens": 510192581,
+          "input_tokens": 508717368,
+          "output_tokens": 1475213,
+          "cache_read_tokens": 501276928,
+          "model_calls": 2365
         }
       ]
     },
     "claude": {
       "first_recorded_date": "2026-08-21",
-      "last_recorded_date": "2026-10-23",
+      "last_recorded_date": "2026-10-26",
       "totals": {
-        "total_tokens": 3642256353,
-        "input_tokens": 3628968163,
-        "output_tokens": 13288190,
-        "cache_read_tokens": 3508155839,
-        "model_calls": 10034
+        "total_tokens": 3679242178,
+        "input_tokens": 3665659124,
+        "output_tokens": 13583054,
+        "cache_read_tokens": 3541728236,
+        "model_calls": 10336
       },
       "last_28_days": {
-        "start_date": "2026-09-26",
-        "end_date": "2026-10-23",
-        "total_tokens": 1463269580,
-        "input_tokens": 1458768332,
-        "output_tokens": 4501248,
-        "cache_read_tokens": 1416878932,
-        "model_calls": 3792,
+        "start_date": "2026-09-29",
+        "end_date": "2026-10-26",
+        "total_tokens": 1272473727,
+        "input_tokens": 1268282890,
+        "output_tokens": 4190837,
+        "cache_read_tokens": 1227257102,
+        "model_calls": 3499,
         "active_days": 26,
-        "average_tokens_per_week": 365817395.0,
-        "model_calls_per_active_day": 145.8
+        "average_tokens_per_week": 318118431.75,
+        "model_calls_per_active_day": 134.6
       },
       "daily": [
         {
@@ -821,11 +853,35 @@
         },
         {
           "date": "2026-10-23",
-          "total_tokens": 253940,
-          "input_tokens": 253127,
-          "output_tokens": 813,
-          "cache_read_tokens": 198982,
-          "model_calls": 4
+          "total_tokens": 3140434,
+          "input_tokens": 3112108,
+          "output_tokens": 28326,
+          "cache_read_tokens": 2879096,
+          "model_calls": 37
+        },
+        {
+          "date": "2026-10-24",
+          "total_tokens": 14937711,
+          "input_tokens": 14799292,
+          "output_tokens": 138419,
+          "cache_read_tokens": 13540731,
+          "model_calls": 118
+        },
+        {
+          "date": "2026-10-25",
+          "total_tokens": 12359765,
+          "input_tokens": 12281856,
+          "output_tokens": 77909,
+          "cache_read_tokens": 10977643,
+          "model_calls": 99
+        },
+        {
+          "date": "2026-10-26",
+          "total_tokens": 6801855,
+          "input_tokens": 6750832,
+          "output_tokens": 51023,
+          "cache_read_tokens": 6373909,
+          "model_calls": 52
         }
       ]
     }
