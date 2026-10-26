@@ -38,6 +38,12 @@ Codex uses per-response `token_usage_record.payload.usage`, deduplicated by
 thread/turn token counters or duplicate `event_msg` notifications. Reasoning
 tokens are already included in output.
 
+Both plain `.jsonl` and compressed `.jsonl.zst` transcripts are read. Codex can
+compress inactive rollouts; compression must not make their usage disappear.
+The publisher streams compressed files through the local `zstd` executable,
+without writing expanded transcripts to disk. Copied plain/compressed records
+are deduplicated together. Missing `zstd` or failed decompression stops the run.
+
 Claude Code uses assistant messages with usage, deduplicated globally by
 `message.id`, including across copied transcripts and subagent files. Streaming
 updates merge the maximum of each counter for that message; they are not summed.
@@ -47,14 +53,14 @@ cache TTL breakdowns, and nested `iterations` are not added a second time.
 
 ### Retaining historical counts
 
-Claude Code can remove old transcripts during its retention sweep. The local
-publisher therefore keeps a private numeric ledger outside the Git checkout,
+Local transcripts can be removed or rewritten. The local publisher therefore
+keeps separate Codex and Claude Code private numeric ledgers outside the Git checkout,
 in a sibling `.ai-usage-state` directory. Only timestamps, numeric counters,
 and SHA-256 message-ID digests are retained; no conversation content or original
 IDs are stored there. The ledger and its previous valid backup are written
 atomically with owner-only file access and are never staged or pushed.
 
-The initial historical baseline is the last complete published snapshot from
+The initial Claude historical baseline is the last complete published snapshot from
 [20 October 2026](https://github.com/Darrenus/Darrenus/commit/6c4c261e2ff40ff826130d2ee2bf488cd7ea2c2a).
 Its daily counters are checked against its totals before import. Calls with
 timestamps at or before that snapshot's observation time belong exclusively to
@@ -62,6 +68,16 @@ the sealed baseline; later calls belong exclusively to the private ledger.
 Restoring an old transcript therefore does not add its calls twice. Streaming
 updates for later calls retain the maximum counters rather than summing copies.
 Updates to calls already sealed in the baseline are not retroactively estimated.
+
+The Codex baseline was recovered on 26 October 2026, at the observation cutoff
+of the [23 October published snapshot](https://github.com/Darrenus/Darrenus/commit/4bc4f83).
+Reading compressed rollouts recovered previously omitted older counters. For
+22 October, the available rollouts were still short by 117 calls and 11,066,839
+tokens at that cutoff. That day's exact published aggregate is retained in full;
+other dates use the recovered request-level counters. The recovery snapshot and
+numeric provenance are kept privately alongside the ledger. This restores the
+known statistics, not the missing raw conversations. All calls through the
+cutoff belong exclusively to this baseline; later calls are retained by digest.
 
 The publisher still applies the existing cumulative and per-day history-loss
 checks. It does not fill missing counts with guesses or take a maximum between

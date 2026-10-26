@@ -1,10 +1,12 @@
 import json
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timezone
 from pathlib import Path
 
-from sync_ai_usage import aggregate, collect, merge, normalize
+from sync_ai_usage import aggregate, collect, merge, normalize, snapshot, zstd_command
 from usage_cards import validate
 from publish_ai_usage import guard_history
 from usage_history import seed_history, retain, load_history, save_history
@@ -143,6 +145,87 @@ class WorkloadAccounting(unittest.TestCase):
         guard_history(current, previous, audit)
         with self.assertRaises(ValueError):
             guard_history(current, previous, {"codex": audit['codex'], "claude": {}})
+
+
+    @unittest.skipUnless(zstd_command(), "zstd is required for compressed transcript fixtures")
+    def test_compressed_migration_preserves_accounting_and_deduplicates_copies(self):
+        now = datetime(2026, 10, 23, 4, tzinfo=timezone.utc)
+        first = {"type": "token_usage_record", "timestamp": "2026-10-22T01:00:00Z", "payload": {
+            "response_id": "old-response", "usage": {"input_tokens": 100, "output_tokens": 20}}}
+        second = {**first, "payload": {"response_id": "new-response", "usage": {
+            "input_tokens": 200, "output_tokens": 30}}}
+        with tempfile.TemporaryDirectory(prefix="usage fixture 空格 ") as folder:
+            root = Path(folder)
+            plain = root / "old.jsonl"
+            plain.write_text(json.dumps(first) + "\n")
+            before, _ = collect([root], "codex", now)
+            previous = aggregate(before, now)
+            packed = subprocess.run([zstd_command(), "-q", "-c"],
+                input=(json.dumps(first) + "\n" + json.dumps(second) + "\n").encode(),
+                capture_output=True, check=True).stdout
+            (root / "migrated.jsonl.zst").write_bytes(packed)
+            records, audit = collect([root, root], "codex", now)
+            self.assertEqual(audit["unique_model_calls"], 2)
+            self.assertEqual(audit["compressed_files"], 1)
+            self.assertEqual(aggregate(records, now)["totals"]["total_tokens"], 350)
+            plain.unlink()
+            records, _ = collect([root], "codex", now)
+            current = aggregate(records, now)
+            base = {"schema_version": 2, "generated_at": now.isoformat(), "timezone": "Asia/Singapore"}
+            guard_history({**base, "providers": {p: current for p in ("codex", "claude")}},
+                          {**base, "providers": {p: previous for p in ("codex", "claude")}},
+                          {p: audit for p in ("codex", "claude")})
+
+    @unittest.skipUnless(zstd_command(), "zstd is required for compressed transcript fixtures")
+    def test_corrupt_compressed_file_stops_collection(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "broken.jsonl.zst").write_bytes(b"not a zstd stream")
+            with self.assertRaisesRegex(ValueError, "compressed usage"):
+                collect([root], "codex", datetime.now(timezone.utc))
+            # Even a valid first frame must not hide a corrupt trailing frame.
+            entry = {"type": "token_usage_record", "timestamp": "2026-10-22T01:00:00Z", "payload": {
+                "response_id": "valid-prefix", "usage": {"input_tokens": 100, "output_tokens": 20}}}
+            packed = subprocess.run([zstd_command(), "-q", "-c"],
+                input=(json.dumps(entry) + '\n').encode(), capture_output=True, check=True).stdout
+            (root / "broken.jsonl.zst").write_bytes(packed + b"corrupt trailing frame")
+            with self.assertRaisesRegex(ValueError, "compressed usage"):
+                collect([root], "codex", datetime.now(timezone.utc))
+
+    def test_missing_decompressor_stops_collection(self):
+        with tempfile.TemporaryDirectory() as folder, patch('sync_ai_usage.zstd_command', return_value=None):
+            root = Path(folder)
+            (root / "unreadable.jsonl.zst").write_bytes(b"placeholder")
+            with self.assertRaisesRegex(ValueError, "require zstd"):
+                collect([root], "codex", datetime.now(timezone.utc))
+
+    def test_both_provider_ledgers_survive_removed_calls_and_do_not_mix(self):
+        cutoff, old, baseline, _ = self.history_fixture()
+        baseline['providers']['codex'] = aggregate([{**old, 'input': 400}], cutoff)
+        codex_state = seed_history(baseline, "codex")
+        claude_state = seed_history(baseline, "claude")
+        later = datetime(2026, 10, 21, 5, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as folder:
+            home = Path(folder)
+            codex_dir = home / '.codex/sessions'
+            claude_dir = home / '.claude/projects'
+            codex_dir.mkdir(parents=True)
+            claude_dir.mkdir(parents=True)
+            (codex_dir / 'new.jsonl').write_text(json.dumps({
+                'type': 'token_usage_record', 'timestamp': later.isoformat(), 'payload': {
+                    'response_id': 'same-private-id', 'usage': {'input_tokens': 200, 'output_tokens': 30}}}) + '\n')
+            (claude_dir / 'new.jsonl').write_text(json.dumps({
+                'type': 'assistant', 'timestamp': later.isoformat(), 'message': {
+                    'id': 'same-private-id', 'usage': {'input_tokens': 300, 'output_tokens': 40}}}) + '\n')
+            first, audit = snapshot(home, later, claude_state, codex_state)
+            self.assertEqual(first['providers']['codex']['totals']['total_tokens'], 650)
+            self.assertEqual(first['providers']['claude']['totals']['total_tokens'], 460)
+            for provider, directory in [('codex', codex_dir), ('claude', claude_dir)]:
+                (directory / 'new.jsonl').write_text('{}\n')
+            second, _ = snapshot(home, later, claude_state, codex_state)
+            self.assertEqual(first, second)
+            guard_history(second, baseline, audit)
+            self.assertNotIn('same-private-id', json.dumps([codex_state, claude_state]))
 
 
 if __name__ == "__main__":

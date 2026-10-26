@@ -7,7 +7,10 @@ are never included in the public output. No provider API or model is called.
 
 import argparse
 import json
+import shutil
+import subprocess
 from collections import Counter, defaultdict
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -65,19 +68,54 @@ def merge(records, identifier, record):
     records[identifier] = record
 
 
+def zstd_command():
+    # Scheduled desktop runs may have a smaller PATH than an interactive shell.
+    return shutil.which("zstd") or next((str(path) for path in (
+        Path("/opt/homebrew/bin/zstd"), Path("/usr/local/bin/zstd")
+    ) if path.is_file()), None)
+
+
+@contextmanager
+def usage_lines(path):
+    if path.suffix != ".zst":
+        with path.open(encoding="utf-8", errors="replace") as source:
+            yield source
+        return
+    command = zstd_command()
+    if command is None:
+        raise ValueError("Compressed usage records require zstd; keeping previous snapshot")
+    # Stream privately in memory. Never expand transcripts onto disk or expose
+    # decompressor stderr, which may contain local transcript filenames.
+    process = subprocess.Popen([command, "-dc", "--", str(path)],
+        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        text=True, encoding="utf-8", errors="replace")
+    try:
+        yield process.stdout
+        process.stdout.close()
+        if process.wait(timeout=30) != 0:
+            raise ValueError("Could not read compressed usage records; keeping previous snapshot")
+    finally:
+        process.stdout.close()
+        if process.poll() is None:
+            process.kill()
+        process.wait()
+
+
 def collect(paths, provider, now, keyed=False):
     records, audit = {}, Counter()
     seen_files = set()
     for root in paths:
         if not root.exists():
             continue
-        for path in root.rglob("*.jsonl"):
+        for path in (path for pattern in ("*.jsonl", "*.jsonl.zst") for path in root.rglob(pattern)):
             resolved = path.resolve()
             if resolved in seen_files:
                 continue
             seen_files.add(resolved)
             audit["files"] += 1
-            with path.open(encoding="utf-8", errors="replace") as source:
+            if path.suffix == ".zst":
+                audit["compressed_files"] += 1
+            with usage_lines(path) as source:
                 for line in source:
                     marker = '"token_usage_record"' if provider == "codex" else '"usage"'
                     if marker not in line:
@@ -145,20 +183,22 @@ def aggregate(records, now, history=()):
     }
 
 
-def snapshot(home, now, claude_state=None):
+def snapshot(home, now, claude_state=None, codex_state=None):
     providers = {
         "codex": [home / ".codex/sessions", home / ".codex/archived_sessions"],
         "claude": [home / ".claude/projects"],
     }
     result = {"schema_version": 2, "generated_at": now.isoformat(), "timezone": "Asia/Singapore", "providers": {}}
     audit = {}
+    states = {"claude": claude_state, "codex": codex_state}
     for provider, paths in providers.items():
-        retained = provider == "claude" and claude_state is not None
+        state = states[provider]
+        retained = state is not None
         records, audit[provider] = collect(paths, provider, now, keyed=retained)
         if retained:
             from usage_history import retain
-            records = retain(claude_state, records, now)
-            result["providers"][provider] = aggregate(records, now, claude_state["baseline"])
+            records = retain(state, records, now)
+            result["providers"][provider] = aggregate(records, now, state["baseline"])
         else:
             result["providers"][provider] = aggregate(records, now)
     return result, audit
@@ -176,12 +216,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--home-dir", type=Path, default=Path.home(), help="Read local counters under this home directory")
     args = parser.parse_args()
-    from usage_history import HISTORY_PATH, load_history, save_history
+    from usage_history import HISTORY_PATH, CODEX_HISTORY_PATH, load_history, save_history
     state = load_history(HISTORY_PATH) if args.home_dir == Path.home() else None
+    codex_state = load_history(CODEX_HISTORY_PATH) if args.home_dir == Path.home() else None
     now = datetime.now(timezone.utc)
-    data, audit = snapshot(args.home_dir, now, state)
+    data, audit = snapshot(args.home_dir, now, state, codex_state)
+    if args.home_dir == Path.home() and (ROOT / "data/ai-usage.json").exists():
+        from publish_ai_usage import guard_history
+        guard_history(data, json.loads((ROOT / "data/ai-usage.json").read_text()), audit)
     if state is not None:
         save_history(HISTORY_PATH, state)
+    if codex_state is not None:
+        save_history(CODEX_HISTORY_PATH, codex_state)
     write_snapshot(data)
     print(json.dumps({"aggregation_audit": audit, "public_totals": {
         provider: stats["totals"] for provider, stats in data["providers"].items()

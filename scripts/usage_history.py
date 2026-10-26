@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 from sync_ai_usage import ROOT
 
 HISTORY_PATH = ROOT.parent / ".ai-usage-state" / "claude-history.json"
+CODEX_HISTORY_PATH = ROOT.parent / ".ai-usage-state" / "codex-history.json"
 COUNTERS = {"model_calls", "input_tokens", "output_tokens", "cache_read_tokens", "total_tokens"}
 
 
@@ -53,11 +54,13 @@ def validate_state(state):
     return state
 
 
-def seed_history(snapshot):
+def seed_history(snapshot, provider="claude"):
     from usage_cards import validate
     from sync_ai_usage import aggregate
     validate(snapshot)
-    baseline = snapshot["providers"]["claude"]
+    if provider not in {"codex", "claude"}:
+        raise ValueError("Unknown history provider")
+    baseline = snapshot["providers"][provider]
     cutoff = stamp(snapshot["generated_at"])
     rebuilt = aggregate([], cutoff, baseline["daily"])
     if rebuilt != baseline:
