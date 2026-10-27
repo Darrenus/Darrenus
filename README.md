@@ -5,9 +5,9 @@
 <tr>
 <td valign="top" width="58%">
 
-<p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 I build AI agents and backend systems. I'm studying software engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after a computer science degree at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
+<p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 I build AI agents and backend systems. Currently studying MTech in software engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after B.S. in computer science at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
 
-<p>My work has taken me from backend to agent developing. I also enjoy the backend work that makes those tools usable: bringing data in, organising storage and running jobs in the background.</p>
+<p>My work has taken me from backend to agent for everything. Geeks build the future; AI writes the code.</p>
 
 <p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring hybrid retrieval with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>. I'm curious about pursuing the future of agents, and using them to address real-world requirements.</p>
 
