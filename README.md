@@ -1,13 +1,13 @@
 <h1 align="center">Rong He · 贺融</h1>
-<p align="center">AI agents · Backend systems · Industrial vision</p>
+<p align="center">Human-centered AI-nerd</p>
 
 <table>
 <tr>
 <td valign="top" width="58%">
 
-<p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 I build AI agents and backend systems. Currently studying MTech in software engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after B.S. in computer science at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
+<p>Hi, I'm <a href="https://rong.bio/en/">Rong</a> 👋 I build AI agents and backend systems during my school work and intern. Currently studying MTech in software engineering at <a href="https://www.nus.edu.sg/">NUS</a> in Singapore, after B.S. in computer science at <a href="https://www.kaist.ac.kr/en/">KAIST</a>.</p>
 
-<p>My work has taken me from backend to agent for everything. Geeks build the future; AI writes the code.</p>
+<p>Nowadays, I'm using AI to explore unfamiliar fields, connect ideas, and turn real-world problems into practical solutions. I’m curious about what one person can learn, create, and accomplish with AI.</p>
 
 <p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring hybrid retrieval with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>. I'm curious about pursuing the future of agents, and using them to address real-world requirements.</p>
 
