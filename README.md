@@ -9,7 +9,7 @@
 
 <p>Nowadays, I'm using AI to explore unfamiliar fields, connect ideas, and turn real-world problems into practical solutions. I’m curious about what one person can learn, create, and accomplish with AI.</p>
 
-<p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring hybrid retrieval with <a href="https://github.com/Darrenus/bodycraft-oss">bodycraft-oss</a>. I'm curious about pursuing the future of agents, and using them to address real-world requirements.</p>
+<p>Recently, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a> and exploring reproducible quantitative research with <a href="https://github.com/Darrenus/TickWitness">TickWitness</a> and deceloping Lumen Next. Learning a new domain, find a meaningful problem, and use AI to turn ideas into something useful.</p>
 
 <p><b>Languages</b><br>
 <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white">
@@ -61,16 +61,16 @@
   <img width="100%" alt="coding-agent-from-scratch — Independent open-source agent with repository maps, sandboxing and controlled evaluation" src="assets/coding-agent-light.svg">
 </picture>
 </a>
-<a href="https://rong.bio/en/projects/spreadsheet-qa/">
+<a href="https://github.com/Darrenus/tickwitness">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/spreadsheet-agent-dark.svg">
-  <img width="100%" alt="Spreadsheet Analysis Agent — SAIC internal project; backend contributor working on storage, async ingestion and guarded execution" src="assets/spreadsheet-agent-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/tickwitness-dark.svg">
+  <img width="100%" alt="TickWitness — Reproducible quantitative research with replay experiments and independently verifiable evidence" src="assets/tickwitness-light.svg">
 </picture>
 </a>
-<a href="https://rong.bio/en/resume#jantech-industrial-ai">
+<a href="https://github.com/ziyangliu-666/lumen-next">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/industrial-vision-dark.svg">
-  <img width="100%" alt="Industrial Vision Scoring — Algorithm engineer at JIEAN; camera-based assembly-step checks using YOLOv8 and GNNs" src="assets/industrial-vision-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/lumen-next-dark.svg">
+  <img width="100%" alt="Lumen — AI-assisted mathematical research with parallel agents, literature search and computation" src="assets/lumen-next-light.svg">
 </picture>
 </a>
 
