@@ -71,28 +71,41 @@ def svg(body, height, theme, title, width=420):
 '''
 
 
-def render(repos, collection, counts):
-    assets = ROOT / "assets"
+def render_featured(assets):
     assets.mkdir(exist_ok=True)
-    stars = sum(repo["stargazers_count"] for repo in repos if not repo["fork"])
-    rows = [("Public repositories", len(repos)), ("Stars earned", stars),
-            ("Commits", counts["commit"]), ("Pull requests", counts["pullRequest"]),
-            ("Issues", counts["issue"]), ("Code reviews", counts["pullRequestReview"])]
-    end = collection["endedAt"][:10]
     cards = [
         ("coding-agent", "coding-agent-from-scratch", [
             "Tool use, repository maps & sandboxing.",
             "Designs tested with controlled experiments."],
          "Independent project · Open source", "#3572A5"),
-        ("spreadsheet-agent", "Spreadsheet Analysis Agent", [
-            "Questions become verified SQL and charts.",
-            "Storage, async ingestion & guarded execution."],
-         "SAIC · Internal project · Backend contributor", "#09886B"),
-        ("industrial-vision", "Industrial Vision Scoring", [
-            "Assembly-step checks from camera feeds.",
-            "YOLOv8 + GNNs for practical examinations."],
-         "JIEAN · Deployed project · Algorithm engineer", "#7C3AED"),
+        ("tickwitness", "TickWitness", [
+            "Reproducible quantitative research.",
+            "Replay experiments, audit portable evidence."],
+         "Research verification · Python", "#09886B"),
+        ("lumen-next", "Lumen", [
+            "AI-assisted mathematical research.",
+            "Parallel agents, literature & computation."],
+         "Mathematics · Research agents", "#7C3AED"),
     ]
+    for theme in ("light", "dark"):
+        for slug, title, lines, role, color in cards:
+            body = text(18, 29, title, "title")
+            for i, line in enumerate(lines):
+                body += text(18, 54 + 20 * i, line, "muted")
+            body += f'<circle cx="23" cy="98" r="5" fill="{color}"/>'
+            body += text(35, 102, role, "muted")
+            (assets / f"{slug}-{theme}.svg").write_text(
+                svg(body, 120, theme, title + ": " + lines[0], width=360), encoding="utf-8")
+
+
+def render(repos, collection, counts):
+    assets = ROOT / "assets"
+    render_featured(assets)
+    stars = sum(repo["stargazers_count"] for repo in repos if not repo["fork"])
+    rows = [("Public repositories", len(repos)), ("Stars earned", stars),
+            ("Commits", counts["commit"]), ("Pull requests", counts["pullRequest"]),
+            ("Issues", counts["issue"]), ("Code reviews", counts["pullRequestReview"])]
+    end = collection["endedAt"][:10]
     for theme in ("light", "dark"):
         body = text(22, 34, "GitHub Stats", "title")
         body += text(22, 56, "Public activity · past 12 months", "muted")
@@ -103,14 +116,6 @@ def render(repos, collection, counts):
         body += text(22, 259, f"Updated {end} · repository & star totals are all-time", "muted")
         (assets / f"github-stats-{theme}.svg").write_text(
             svg(body, 278, theme, "Rong's GitHub statistics"), encoding="utf-8")
-        for slug, title, lines, role, color in cards:
-            body = text(18, 29, title, "title")
-            for i, line in enumerate(lines):
-                body += text(18, 54 + 20 * i, line, "muted")
-            body += f'<circle cx="23" cy="98" r="5" fill="{color}"/>'
-            body += text(35, 102, role, "muted")
-            (assets / f"{slug}-{theme}.svg").write_text(
-                svg(body, 120, theme, title + ": " + lines[0], width=360), encoding="utf-8")
 
 
 if __name__ == "__main__":
