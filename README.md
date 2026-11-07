@@ -9,7 +9,7 @@
 
 <p>Nowadays, I'm using AI to explore unfamiliar fields, connect ideas, and turn real-world problems into practical solutions. I’m curious about what one person can learn, create, and accomplish with AI.</p>
 
-<p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a>, exploring reproducible quantitative research with <a href="https://github.com/Darrenus/tickwitness">TickWitness</a>, and developing <a href="https://github.com/ziyangliu-666/lumen-next">Lumen Next</a>. I enjoy learning about new domains, identifying meaningful problems, and using AI to turn ideas into something useful.</p>
+<p>These days, I'm building a <a href="https://github.com/Darrenus/coding-agent-from-scratch">coding agent from scratch</a>, exploring reproducible quantitative research with <a href="https://github.com/Darrenus/tickwitness">TickWitness</a>, and developing <a href="https://github.com/ziyangliu-666/lumen-next">Lumen Next</a> an auto-research agent. I enjoy learning about new domains, identifying meaningful problems, and using AI to turn ideas into something useful.</p>
 
 <p><b>Languages</b><br>
 <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white">
