@@ -1,29 +1,29 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-10T04:22:06.899138+00:00",
+  "generated_at": "2026-11-11T09:45:17.781869+00:00",
   "timezone": "Asia/Singapore",
   "providers": {
     "codex": {
       "first_recorded_date": "2026-09-06",
-      "last_recorded_date": "2026-11-10",
+      "last_recorded_date": "2026-11-11",
       "totals": {
-        "total_tokens": 5041953523,
-        "input_tokens": 5021423917,
-        "output_tokens": 20529606,
-        "cache_read_tokens": 4885743744,
-        "model_calls": 28590
+        "total_tokens": 5267244624,
+        "input_tokens": 5246139809,
+        "output_tokens": 21104815,
+        "cache_read_tokens": 5108306176,
+        "model_calls": 29354
       },
       "last_28_days": {
-        "start_date": "2026-10-14",
-        "end_date": "2026-11-10",
-        "total_tokens": 3662476055,
-        "input_tokens": 3650697511,
-        "output_tokens": 11778544,
-        "cache_read_tokens": 3574968704,
-        "model_calls": 18197,
+        "start_date": "2026-10-15",
+        "end_date": "2026-11-11",
+        "total_tokens": 3825385085,
+        "input_tokens": 3813564336,
+        "output_tokens": 11820749,
+        "cache_read_tokens": 3737885440,
+        "model_calls": 18597,
         "active_days": 27,
-        "average_tokens_per_week": 915619013.75,
-        "model_calls_per_active_day": 674.0
+        "average_tokens_per_week": 956346271.25,
+        "model_calls_per_active_day": 688.8
       },
       "daily": [
         {
@@ -468,9 +468,17 @@
         },
         {
           "date": "2026-11-10",
-          "total_tokens": 338966,
-          "input_tokens": 338792,
-          "output_tokens": 174,
+          "total_tokens": 225289724,
+          "input_tokens": 224714657,
+          "output_tokens": 575067,
+          "cache_read_tokens": 222562432,
+          "model_calls": 764
+        },
+        {
+          "date": "2026-11-11",
+          "total_tokens": 340343,
+          "input_tokens": 340027,
+          "output_tokens": 316,
           "cache_read_tokens": 0,
           "model_calls": 2
         }
@@ -478,25 +486,25 @@
     },
     "claude": {
       "first_recorded_date": "2026-08-21",
-      "last_recorded_date": "2026-11-09",
+      "last_recorded_date": "2026-11-11",
       "totals": {
-        "total_tokens": 4082972179,
-        "input_tokens": 4068279025,
-        "output_tokens": 14693154,
-        "cache_read_tokens": 3937807816,
-        "model_calls": 11758
+        "total_tokens": 4140838202,
+        "input_tokens": 4125608921,
+        "output_tokens": 15229281,
+        "cache_read_tokens": 3990062635,
+        "model_calls": 12037
       },
       "last_28_days": {
-        "start_date": "2026-10-14",
-        "end_date": "2026-11-10",
-        "total_tokens": 790149085,
-        "input_tokens": 787336355,
-        "output_tokens": 2812730,
-        "cache_read_tokens": 767079820,
-        "model_calls": 3155,
-        "active_days": 27,
-        "average_tokens_per_week": 197537271.25,
-        "model_calls_per_active_day": 116.9
+        "start_date": "2026-10-15",
+        "end_date": "2026-11-11",
+        "total_tokens": 843766399,
+        "input_tokens": 840446375,
+        "output_tokens": 3320024,
+        "cache_read_tokens": 815429703,
+        "model_calls": 3398,
+        "active_days": 28,
+        "average_tokens_per_week": 210941599.75,
+        "model_calls_per_active_day": 121.4
       },
       "daily": [
         {
@@ -1114,6 +1122,22 @@
           "output_tokens": 22324,
           "cache_read_tokens": 3781267,
           "model_calls": 46
+        },
+        {
+          "date": "2026-11-10",
+          "total_tokens": 35231515,
+          "input_tokens": 35052892,
+          "output_tokens": 178623,
+          "cache_read_tokens": 33776469,
+          "model_calls": 157
+        },
+        {
+          "date": "2026-11-11",
+          "total_tokens": 22634508,
+          "input_tokens": 22277004,
+          "output_tokens": 357504,
+          "cache_read_tokens": 18478350,
+          "model_calls": 122
         }
       ]
     }
